@@ -43,11 +43,4 @@ def main():
             telegram(f"Profile OK: {CLIENT_ID} is Live")
 
         else:
-            raise Exception(f"Login Failed: {session}")
-
-    except Exception as e:
-        print(f"ERROR: {e}")
-        telegram(f"❌ FINAL 27 Bot Failed\nError: {e}")
-
-if __name__ == "__main__":
-    main()
+            raise Exception
