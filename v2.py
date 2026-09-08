@@ -1,4 +1,4 @@
-import os, pytotp, time, requests, datetime
+import os, pyotp, time, requests, datetime
 from SmartApi import SmartConnect
 import pandas as pd
 import numpy as np
@@ -15,7 +15,7 @@ STOCKS_FINAL_15 = ["MANAPPURAM","CUMMINSIND","CHENNPETRO","DCXIND","IRFC","TORNT
 
 def login():
     obj = SmartConnect(api_key=API_KEY)
-    obj.generateSession(CLIENT_ID, PASSWORD, pytotp.TOTP(TOTP_SECRET).now())
+    obj.generateSession(CLIENT_ID, PASSWORD, pyotp.TOTP(TOTP_SECRET).now())
     return obj
 
 def get_token_map():
@@ -52,7 +52,7 @@ def send_telegram(msg):
 def main():
     api = login()
     token_map = get_token_map()
-    print(f"LOGIN OK | FINAL 15 SCANNER ONLY | {datetime.datetime.now().strftime('%d-%b %H:%M')}")
+    print(f"LOGIN OK | FINAL 15 SCANNER | {datetime.datetime.now().strftime('%d-%b %H:%M')}")
 
     buys = []
     for sym in STOCKS_FINAL_15:
@@ -78,7 +78,8 @@ def main():
             if last['c'] > last['supertrend'] and last['c'] > last['EMA20'] and last['EMA20'] > last['EMA50'] and last['RSI'] > 55:
                 buys.append(f"{sym} - PRICE {round(last['c'],2)}, RSI {round(last['RSI'],1)}")
             time.sleep(0.3)
-        except:
+        except Exception as e:
+            print(f"{sym} error {e}")
             continue
 
     if buys:
