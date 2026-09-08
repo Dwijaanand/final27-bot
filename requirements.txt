@@ -1,7 +1,9 @@
 smartapi-python
 pyotp
+pytotp
 pandas
 ta
 requests
 logzero
 websocket-client
+numpy
